@@ -1,7 +1,9 @@
-// Struct_Movie :		Feb 2022
-// Sample based on example about structures from cplusplus.com
+// Movie struct                         		Feb 2022
 //
-// Structs are used a Plain Old Data Types (PODs) (with no constructors, destructors or methods)
+// Sample based on example on structures (structs) from cplusplus.com
+//
+// Demonstrates:
+// Structs are used as Plain Old Data Types (PODs) (with no constructors, destructors or methods)
 // Defining and declaring a struct (object)
 // Accessing the members of a struct (which are public)
 // Passing a struct object by value and by reference
@@ -82,19 +84,21 @@ int main()
     for (int i = 0; i < 3; i++)
         cout << i << ": " << myTop3Movies[i].title << ", " << myTop3Movies[i].year << endl;
 
-    // DMA
+    // DMA (Dynamic Memory Allocation)
     // Dynamically allocate a block of memory to store a single struct
     // and access it using a pointer
 
-    movie_t* pMovie = new movie_t; // allocate  a block of memort big enought to store one struct
-    //(*pMovie).title = "Baby Driver";
+    movie_t* pMovie = new movie_t; // allocate a block of memory big enough to store one struct
+    //(*pMovie).title = "Baby Driver";  // dereference the struct and assess its title field
 
     cout << "Dynamically allocate struct" << endl;
-    pMovie->title = "Baby Driver";	// arrow mmeber access operator is easier to read
+    pMovie->title = "Baby Driver";	// ARROW member access operator is easier to read
     pMovie->year = 2016;
 
-    // cout << *pMovie;  - won't work as cout doesnt know what a movie_t struct is
-    // can access each member using ->
+    // cout << *pMovie;  - won't work as 'cout' doesn't know what a movie_t struct is
+    // and thus, does not know how to interpret its contents for printing
+
+    // can access each member using "->"
     cout << pMovie->title << endl;
     cout << pMovie->year << endl;
 
@@ -128,8 +132,8 @@ int main()
 
     //TODO
     // Write a function that will accept the movies array and output all movies.
-    // Remember the function prototype.
-    
+    // Remember to declare function prototype.
+
 
     // when finished - we must remember to free dynamic memory
     delete [] movies;	// 'delete' dynamically allocate array of memory from the Heap
@@ -145,7 +149,7 @@ int main()
    to directly modify the contents of the original struct passed (by reference) from main.
 */
 
-void print_movie(const movie_t& movie)
+void print_movie(const movie_t& movie)      // reference to a movie struct
 {
     cout << movie.title;			// note public access to member data
     cout << " (" << movie.year << ")" << endl;
@@ -156,6 +160,9 @@ void print_movie(const movie_t& movie)
    Any changes made to the 'movie' struct are local to the function,
    and these changes have no effect on the original struct (passed from main).
    The 'movie' struct is discarded (from the stack) when the function exits.
+   Note that this can be an expensive operation, as all the field values of the
+   struct being passed must be copied into the struct fields of the parameter.
+
 */
 void pass_by_value_demo(movie_t movie)
 {
@@ -165,12 +172,11 @@ void pass_by_value_demo(movie_t movie)
 }
 
 /** Demo: Return a struct from a function.
-A struct created in a function can be returned. What is actualy returned, is a COPY of the
+A struct created in a function can be returned. What is actually returned, is a COPY of the
 data in the local struct.  The data returned must be assigned to a struct variable by the calling function.
 
 Note that the local movie struct will be discarded when the function returns. Therefore, it is
 an error to return a reference to a local struct. (as it would no longer exist after the return)
-(This is like returning an int from a function)
 */
 movie_t return_a_struct_demo()
 {
