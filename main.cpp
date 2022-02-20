@@ -17,21 +17,23 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+
 using namespace std;
 
-struct movie_type {			// indicates that this is a type
+struct movie_type {            // indicates that this is a type
     string title;
     int year;
 };
 //myFavouriteMovie;			// declares a struct called 'myFavouriteMovie', accessible throughout this .cpp file
 
 // function prototypes
-void print_movie_pass_by_reference(const movie_type& movie);
+void print_movie_pass_by_reference(const movie_type &movie);
+
 void print_movie_pass_by_value(movie_type movie);
+
 movie_type return_a_struct_copy();
 
-int main()
-{
+int main() {
     cout << "Structs demo" << endl;
 
     movie_type myFavouriteMovie; // declares a struct (object) in stack memory
@@ -40,14 +42,14 @@ int main()
 
     myFavouriteMovie.title = "2001 A Space Odyssey";    // possible because struct members are public
     myFavouriteMovie.year = 1968;
-    
+
     cout << "My favorite movie is:\n ";
     print_movie_pass_by_reference(myFavouriteMovie);
 
-    movie_type yourFavouriteMovie;				// declare a struct (object)  called 'yourFavouriteMovie' of type movie_type
+    movie_type yourFavouriteMovie;                // declare a struct (object)  called 'yourFavouriteMovie' of type movie_type
     cout << "What is your favourite movie?" << endl;
     cout << "Enter title: ";
-    getline(cin, yourFavouriteMovie.title);	// read directly into the struct
+    getline(cin, yourFavouriteMovie.title);    // read directly into the struct
 
     string input;   // creates a string object (variable)
     cout << "Enter year: ";
@@ -85,7 +87,7 @@ int main()
 
     ////////////////////////////// Array of struct ////////////////////////////////////////////////
 
-    movie_type myTop3Movies[3];	// defines an array of structs on the STACK
+    movie_type myTop3Movies[3];    // defines an array of structs on the STACK
     myTop3Movies[0].title = "Jaws";
     myTop3Movies[0].year = 1978;
     myTop3Movies[1].title = "Alien";
@@ -103,15 +105,15 @@ int main()
     // and access it using a pointer.  Remember that 'new' always returns an address
     // of the memory allocated, so we must use a pointer to store the returned address.
 
-    movie_type* movie_ptr = new movie_type; // allocate a block of memory big enough to store one movie_type struct
-                                            // the movie struct object is stored in the HEAP.
+    movie_type *movie_ptr = new movie_type; // allocate a block of memory big enough to store one movie_type struct
+    // the movie struct object is stored in the HEAP.
 
     // Assign some data to the struct members (fields)
     (*movie_ptr).title = "Casablanca";  // dereference the struct and access its title field.  Brackets are needed.
 
     // the above is a cumbersome syntax, so the arrow access operator "->" is preferred
 
-    movie_ptr->title = "Baby Driver";	// ARROW member access operator is easier to read
+    movie_ptr->title = "Baby Driver";    // ARROW member access operator is easier to read
     movie_ptr->year = 2016;
 
     // cout << *movie_ptr;  - won't work as 'cout' doesn't know what a movie_type struct is
@@ -139,7 +141,7 @@ int main()
 
     size = 3;
 
-    movie_type* movies = new movie_type[size];
+    movie_type *movies = new movie_type[size];
 
     // Above - allocate block of memory big enough to store 'size' number of movie_type structs
     // That is - an array of movie_type structs.
@@ -166,14 +168,41 @@ int main()
     cout << "movies[1].year  = " << movies[1].year << endl;
 
     cout << "\nAll elements in the dynamically allocates movies[] array:" << endl;
-    for(int i=0; i<size; i++) {
+    for (int i = 0; i < size; i++) {
         cout << "movies[" << i << "] ";
         cout << "title=" << movies[i].title << ", ";
         cout << "year =" << movies[i].year << "." << endl;
     }
-    
+
     // when finished - we must remember to free dynamic memory
-    delete [] movies;	// 'delete' dynamically allocate array of memory from the Heap
+    delete[] movies;    // 'delete' dynamically allocate array of memory from the Heap
+
+    // Dynamically allocate an array of struct and use pointer notation to access the elements.
+    cout << "\nIncrement pointer to access struct array elements." << endl;
+    movie_type* const movie_ptr_start = new movie_type[size];  // keep constant pointer to start of array
+
+    // populate the array
+    movie_ptr_start[0].title = "Judge Dredd";    // first array element, title member
+    movie_ptr_start[0].year = 2012;
+    movie_ptr_start[1].title = "Midnight Express";
+    movie_ptr_start[1].year = 1987;
+    movie_ptr_start[2].title = "Independence Day";
+    movie_ptr_start[2].year = 2004;
+
+    movie_ptr = movie_ptr_start; // initialize a pointer that can be incremented to access elements
+
+    for (int i = 1; i <= size; i++) {
+        cout << "Title:" << movie_ptr->title << endl; // arrow member access operator
+        cout << "Year:"  << movie_ptr->year << endl;
+        movie_ptr++;    // increment pointer to move to next element (move by one struct length)
+    }
+
+    // reset out pointer to start of the array
+    movie_ptr = movie_ptr_start;
+
+    cout << "Title of first element is: " << movie_ptr->title << endl; //
+
+    cout << "End of struct samples. - Goodbye!" << endl;
 
     return 0;
 }
@@ -192,9 +221,9 @@ int main()
    to directly modify the contents of the original struct passed (by reference) from main.
 */
 
-void print_movie_pass_by_reference(const movie_type& movie)      // reference to a movie struct
+void print_movie_pass_by_reference(const movie_type &movie)      // reference to a movie struct
 {
-    cout << movie.title;			// note public access to member data
+    cout << movie.title;            // note public access to member data
     cout << " (" << movie.year << ")" << endl;
 }
 
@@ -207,10 +236,9 @@ void print_movie_pass_by_reference(const movie_type& movie)      // reference to
    struct being passed must be copied into the struct fields of the parameter.
 
 */
-void print_movie_pass_by_value(movie_type movie)
-{
+void print_movie_pass_by_value(movie_type movie) {
     cout << "... in print_movie_pass_by_value() " << "Title:" << movie.title << "Year: " << movie.year << endl;
-    movie.title = "Flash Gordon";		// this will update ONLY the local copy of the movie structure
+    movie.title = "Flash Gordon";        // this will update ONLY the local copy of the movie structure
     movie.year = 1980;
 }
 
@@ -221,14 +249,13 @@ data in the local struct.  The data returned must be assigned to a struct variab
 Note that the local movie struct will be discarded when the function returns. Therefore, it is
 an error to return a reference to a local struct. (as it would no longer exist after the return)
 */
-movie_type return_a_struct_copy()
-{
-    movie_type movie;	// creates a local struct object (on stack)
+movie_type return_a_struct_copy() {
+    movie_type movie;    // creates a local struct object (on stack)
 
     movie.title = "Joker";
     movie.year = 2019;
 
-    return movie;	// returns a copy of the struct data
+    return movie;    // returns a copy of the struct data
 }
 
 
