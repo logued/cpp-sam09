@@ -110,6 +110,7 @@ int main() {
 
     // Assign some data to the struct members (fields)
     (*movie_ptr).title = "Casablanca";  // dereference the struct and access its title field.  Brackets are needed.
+    (*movie_ptr).year = 1954;
 
     // the above is a cumbersome syntax, so the arrow access operator "->" is preferred
 
@@ -197,8 +198,10 @@ int main() {
         movie_ptr++;    // increment pointer to move to next element (move by one struct length)
     }
 
-    // reset out pointer to start of the array
-    movie_ptr = movie_ptr_start;
+
+    // Free up the dynamic memory and set pointer to null
+    delete [] movie_ptr;
+    movie_ptr = nullptr;
 
     cout << "Title of first element is: " << movie_ptr->title << endl; //
 
