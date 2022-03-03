@@ -197,13 +197,10 @@ int main() {
         cout << "Year:"  << movie_ptr->year << endl;
         movie_ptr++;    // increment pointer to move to next element (move by one struct length)
     }
+    movie_ptr = nullptr;    // set to null, as we are finished with it
 
-
-    // Free up the dynamic memory and set pointer to null
-    delete [] movie_ptr;
-    movie_ptr = nullptr;
-
-    cout << "Title of first element is: " << movie_ptr->title << endl; //
+    // Free up the dynamic memory
+    delete [] movie_ptr_start;
 
     cout << "End of struct samples. - Goodbye!" << endl;
 
